@@ -4,7 +4,11 @@
 \alias{get_trade_orders_history_7d}
 \title{Get trade orders history (last 7 days)}
 \usage{
-get_trade_orders_history_7d(inst_type = "SWAP", config, tz = .okx_default_tz)
+get_trade_orders_history_7d(
+  inst_type = "SWAP",
+  config,
+  tz = .okx_default_tz
+)
 }
 \arguments{
 \item{inst_type}{Character. Instrument type. One of `"SPOT"`, `"MARGIN"`,
@@ -21,32 +25,33 @@ schema (same layout as pending orders, plus final states). Timestamp columns
 are `POSIXct` in `tz`.
 }
 \description{
-Retrieve recent order history (up to ~7 days) for the specified instrument type.
-This wraps `/api/v5/trade/orders-history`. For older data, OKX provides
-an archive endpoint (`orders-history-archive`) which is not covered here.
+Retrieve recent order history for an instrument type.
+}
+\details{
+This wraps `/api/v5/trade/orders-history` and covers about 7 days of data.
+Older data is available from OKX's archive endpoint.
 }
 \note{
 Since okxr 0.1.2
 }
 \section{Common errors}{
 
-- HTTP 401 Unauthorized (missing/invalid credentials)
-- HTTP 400 Bad Request (invalid `inst_type`)
+- HTTP 401 Unauthorized
+- HTTP 400 Bad Request for invalid `inst_type`
 }
 
 \examples{
 \dontrun{
 cfg <- list(api_key = "xxx", secret_key = "xxx", passphrase = "xxx")
-hist <- get_trade_orders_history_7d(inst_type = "SWAP", config = cfg, tz = "Asia/Hong_Kong")
+hist <- get_trade_orders_history_7d(
+  inst_type = "SWAP",
+  config = cfg,
+  tz = "Asia/Hong_Kong"
+)
 tail(hist)
 }
 
 }
 \seealso{
 [get_trade_order()], [get_trade_orders_pending()]
-
-Other okxr-trade: 
-\code{\link{get_trade_orders_pending}()},
-\code{\link{get_trade_order}()}
 }
-\concept{okxr-trade}

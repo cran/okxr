@@ -103,6 +103,68 @@
 }
 
 #' @keywords internal
+.okx_has_value <- function(value) {
+  !(is.null(value) || length(value) == 0L || identical(value, ""))
+}
+
+#' @keywords internal
+.okx_assert_exactly_one_present <- function(..., names = NULL) {
+  values <- list(...)
+  keep <- vapply(values, .okx_has_value, logical(1))
+
+  if (sum(keep) != 1L) {
+    if (is.null(names)) {
+      names <- names(values)
+    }
+    stop(
+      "Provide exactly one of ",
+      paste(sprintf("`%s`", names), collapse = " or "),
+      ".",
+      call. = FALSE
+    )
+  }
+
+  invisible(TRUE)
+}
+
+#' @keywords internal
+.okx_assert_non_empty_list <- function(x, arg) {
+  if (!is.list(x) || length(x) == 0L) {
+    stop("`", arg, "` must be a non-empty list.", call. = FALSE)
+  }
+
+  invisible(TRUE)
+}
+
+#' @keywords internal
+.okx_assert_has_fields <- function(x, fields, arg) {
+  missing_fields <- fields[!vapply(fields, function(field) .okx_has_value(x[[field]]), logical(1))]
+  if (length(missing_fields) > 0L) {
+    stop(
+      "`", arg, "` is missing required field(s): ",
+      paste(missing_fields, collapse = ", "),
+      call. = FALSE
+    )
+  }
+
+  invisible(TRUE)
+}
+
+#' @keywords internal
+.okx_assert_any_field_present <- function(x, fields, arg) {
+  has_any <- any(vapply(fields, function(field) .okx_has_value(x[[field]]), logical(1)))
+  if (!has_any) {
+    stop(
+      "`", arg, "` must include at least one of: ",
+      paste(fields, collapse = ", "),
+      call. = FALSE
+    )
+  }
+
+  invisible(TRUE)
+}
+
+#' @keywords internal
 .okx_generate_client_order_id <- function(prefix = "r") {
   paste0(prefix, format(Sys.time(), "%Y%m%d%H%M%S"), sample(1000:9999, 1))
 }

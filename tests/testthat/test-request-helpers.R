@@ -38,6 +38,30 @@ test_that(".okx_extract_result respects raw_data flag", {
   expect_null(okxr:::.okx_extract_result(NULL))
 })
 
+test_that("internal POST validation helpers enforce required shapes", {
+  expect_true(okxr:::.okx_has_value("x"))
+  expect_false(okxr:::.okx_has_value(""))
+  expect_false(okxr:::.okx_has_value(NULL))
+
+  expect_invisible(okxr:::.okx_assert_exactly_one_present("1", NULL, names = c("a", "b")))
+  expect_error(
+    okxr:::.okx_assert_exactly_one_present(NULL, NULL, names = c("a", "b")),
+    "Provide exactly one of `a` or `b`"
+  )
+  expect_error(
+    okxr:::.okx_assert_non_empty_list(list(), "orders"),
+    "`orders` must be a non-empty list"
+  )
+  expect_error(
+    okxr:::.okx_assert_has_fields(list(inst_id = "BTC-USDT"), c("inst_id", "side"), "orders[[1]]"),
+    "missing required field\\(s\\): side"
+  )
+  expect_error(
+    okxr:::.okx_assert_any_field_present(list(a = NULL, b = ""), c("a", "b"), "req"),
+    "must include at least one of: a, b"
+  )
+})
+
 test_that(".okx_request_timeout validates timeout sources", {
   timeout <- okxr:::.okx_request_timeout(list(timeout = 3))
   expect_s3_class(timeout, "request")

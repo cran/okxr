@@ -24,7 +24,8 @@ post_account_set_leverage(
 
 \item{tz}{Timezone used for any timestamp parsing (default: \code{"Asia/Hong_Kong"}).}
 
-\item{config}{A list containing API credentials: \code{api_key}, \code{secret_key}, and \code{passphrase}.}
+\item{config}{API credential list with keys `api_key`, `secret_key`,
+and `passphrase`.}
 }
 \value{
 A \code{data.frame} with leverage update confirmation (including instrument ID and leverage settings).

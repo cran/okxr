@@ -4,7 +4,12 @@
 \alias{get_market_trades}
 \title{Get recent public trades}
 \usage{
-get_market_trades(inst_id, limit = NULL, config = NULL, tz = .okx_default_tz)
+get_market_trades(
+  inst_id,
+  limit = NULL,
+  config = NULL,
+  tz = .okx_default_tz
+)
 }
 \arguments{
 \item{inst_id}{Character. Instrument ID, e.g. `"BTC-USDT"`.}

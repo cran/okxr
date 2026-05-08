@@ -44,10 +44,4 @@ get_copy_trade_my_leaders(inst_type = "SWAP", config = cfg)
 }
 \seealso{
 [get_copy_trade_settings()], [get_copy_trade_current_subpos()]
-
-Other okxr-copytrading: 
-\code{\link{get_copy_trade_current_subpos}()},
-\code{\link{get_copy_trade_historical_subpos}()},
-\code{\link{get_copy_trade_settings}()}
 }
-\concept{okxr-copytrading}

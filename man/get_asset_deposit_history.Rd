@@ -4,15 +4,45 @@
 \alias{get_asset_deposit_history}
 \title{Get asset deposit history}
 \usage{
-get_asset_deposit_history(config, tz = .okx_default_tz)
+get_asset_deposit_history(
+  ccy = NULL,
+  dep_id = NULL,
+  from_wd_id = NULL,
+  tx_id = NULL,
+  type = NULL,
+  state = NULL,
+  after = NULL,
+  before = NULL,
+  limit = NULL,
+  config,
+  tz = .okx_default_tz
+)
 }
 \arguments{
+\item{ccy}{Character or `NULL`. Currency filter.}
+
+\item{dep_id}{Character or `NULL`. Deposit ID filter.}
+
+\item{from_wd_id}{Character or `NULL`. Source withdrawal ID filter.}
+
+\item{tx_id}{Character or `NULL`. Transaction hash filter.}
+
+\item{type}{Character or `NULL`. Deposit type filter.}
+
+\item{state}{Character or `NULL`. Deposit state filter.}
+
+\item{after}{Character or `NULL`. Pagination cursor for earlier records.}
+
+\item{before}{Character or `NULL`. Pagination cursor for newer records.}
+
+\item{limit}{Integer or `NULL`. Number of rows to request.}
+
 \item{config}{API credentials as a list with \code{api_key}, \code{secret_key}, and \code{passphrase}.}
 
 \item{tz}{Timezone string (default: \code{"Asia/Hong_Kong"}).}
 }
 \value{
-A \code{data.frame} with deposit timestamps, amounts, and currencies.
+A \code{data.frame} with deposit history rows and detailed transfer metadata.
 }
 \description{
 Retrieves a record of all asset deposits made to your account.

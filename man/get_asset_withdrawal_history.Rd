@@ -4,15 +4,45 @@
 \alias{get_asset_withdrawal_history}
 \title{Get asset withdrawal history}
 \usage{
-get_asset_withdrawal_history(config, tz = .okx_default_tz)
+get_asset_withdrawal_history(
+  ccy = NULL,
+  wd_id = NULL,
+  client_id = NULL,
+  tx_id = NULL,
+  type = NULL,
+  state = NULL,
+  after = NULL,
+  before = NULL,
+  limit = NULL,
+  config,
+  tz = .okx_default_tz
+)
 }
 \arguments{
+\item{ccy}{Character or `NULL`. Currency filter.}
+
+\item{wd_id}{Character or `NULL`. Withdrawal ID filter.}
+
+\item{client_id}{Character or `NULL`. Client withdrawal ID filter.}
+
+\item{tx_id}{Character or `NULL`. Transaction hash filter.}
+
+\item{type}{Character or `NULL`. Withdrawal type filter.}
+
+\item{state}{Character or `NULL`. Withdrawal state filter.}
+
+\item{after}{Character or `NULL`. Pagination cursor for earlier records.}
+
+\item{before}{Character or `NULL`. Pagination cursor for newer records.}
+
+\item{limit}{Integer or `NULL`. Number of rows to request.}
+
 \item{config}{API credentials as a list with \code{api_key}, \code{secret_key}, and \code{passphrase}.}
 
 \item{tz}{Timezone string (default: \code{"Asia/Hong_Kong"}).}
 }
 \value{
-A \code{data.frame} with withdrawal timestamps, amounts, and currencies.
+A \code{data.frame} with withdrawal history rows and detailed transfer metadata.
 }
 \description{
 Retrieves a record of all asset withdrawals from your account.

@@ -52,10 +52,4 @@ get_market_candles("BTC-USDT", bar = "5m", limit = 50, config = cfg)
 }
 \seealso{
 [get_market_history_candles()], [get_public_mark_price()]
-
-Other okxr-market: 
-\code{\link{get_market_history_candles}()},
-\code{\link{get_public_instruments}()},
-\code{\link{get_public_mark_price}()}
 }
-\concept{okxr-market}

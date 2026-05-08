@@ -16,7 +16,7 @@ get_trade_orders_pending(config, tz = .okx_default_tz)
 A `data.frame` with one row per pending order and columns following the OKX
 schema (e.g., `cTime`, `ordId`, `clOrdId`, `tag`, `instId`, `ordType`, `px`,
 `sz`, `side`, `posSide`, `tdMode`, `accFillSz`, `fillPx`, `fillSz`,
-`fillTime`, `avgPx`, `state`, `lever`, …). Timestamp columns are `POSIXct`.
+`fillTime`, `avgPx`, `state`, `lever`, ...). Timestamp columns are `POSIXct`.
 }
 \description{
 Retrieve all currently open (unfilled) orders for your OKX account.
@@ -43,9 +43,4 @@ head(df)
 }
 \seealso{
 [get_trade_order()], [get_trade_orders_history_7d()]
-
-Other okxr-trade: 
-\code{\link{get_trade_orders_history_7d}()},
-\code{\link{get_trade_order}()}
 }
-\concept{okxr-trade}

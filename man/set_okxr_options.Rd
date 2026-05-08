@@ -7,7 +7,7 @@
 set_okxr_options(raw_data = NULL, timeout = NULL)
 }
 \arguments{
-\item{raw_data}{Logical. Whether functions should return raw data (default = FALSE).
+\item{raw_data}{Logical. If `TRUE`, return raw API `data`.
 If `NULL`, the current value is left unchanged.}
 
 \item{timeout}{Numeric. HTTP request timeout in seconds. If `NULL`, the
@@ -15,8 +15,8 @@ current value is left unchanged.}
 }
 \value{
 An invisible named list with the current package options:
-  `raw_data` (logical) and `timeout` (numeric seconds). This return value
-  can be used to inspect the effective option state after updating it.
+`raw_data` (logical) and `timeout` (numeric seconds).
+This return value can be used to inspect the effective option state.
 }
 \description{
 Convenience wrapper to set global options for okxr, such as whether to

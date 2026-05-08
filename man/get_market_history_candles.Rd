@@ -19,8 +19,8 @@ get_market_history_candles(
 
 \item{bar}{Character. Candlestick granularity, e.g. `"1m"`, `"5m"`, `"1H"`.}
 
-\item{before}{Character or `NULL`. Timestamp string in format
-`"\%Y-\%m-\%d \%H:\%M:\%S"`. If `NULL` (default), fetches most recent history.}
+\item{before}{Character or `NULL`. Timestamp string like
+`"\%Y-\%m-\%d \%H:\%M:\%S"`. If `NULL`, fetch recent history.}
 
 \item{limit}{Integer. Number of bars to retrieve. Default `100L`.}
 
@@ -33,15 +33,15 @@ get_market_history_candles(
 `timestamp`, `open`, `high`, `low`, `close`, `volume`, `volQuote`.}
 }
 \value{
-A `data.frame` of candlestick bars with standardized column names if
-`standardize_names = TRUE`. Timestamps are `POSIXct` in `tz`.
+A `data.frame` of candlestick bars. If `standardize_names = TRUE`,
+column names are normalized. Timestamps are `POSIXct` in `tz`.
 }
 \description{
 Retrieve candlestick data before a specific datetime.
 }
 \details{
 Wraps `/api/v5/market/history-candles`. If `before` is supplied, it is
-converted to milliseconds since epoch (in `tz`) and sent as `after=…`
+converted to milliseconds since epoch (in `tz`) and sent as `after=...`
 (per OKX semantics: *return data before this time*).
 }
 \note{
@@ -59,10 +59,4 @@ get_market_history_candles(
 }
 \seealso{
 [get_market_candles()]
-
-Other okxr-market: 
-\code{\link{get_market_candles}()},
-\code{\link{get_public_instruments}()},
-\code{\link{get_public_mark_price}()}
 }
-\concept{okxr-market}

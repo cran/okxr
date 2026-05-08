@@ -4,12 +4,21 @@
 \alias{post_trade_cancel_order}
 \title{Cancel a Trade Order}
 \usage{
-post_trade_cancel_order(inst_id, ord_id, config, tz = .okx_default_tz)
+post_trade_cancel_order(
+  inst_id,
+  ord_id = NULL,
+  cl_ord_id = NULL,
+  config,
+  tz = .okx_default_tz
+)
 }
 \arguments{
 \item{inst_id}{Instrument ID (e.g., \code{"BTC-USDT"}).}
 
-\item{ord_id}{Order ID to cancel. Alternatively, you can modify the function to accept \code{clOrdId}.}
+\item{ord_id}{Optional OKX order ID to cancel.}
+
+\item{cl_ord_id}{Optional client order ID to cancel. Provide this or
+`ord_id`.}
 
 \item{config}{A list with API credentials: \code{api_key}, \code{secret_key}, \code{passphrase}.}
 

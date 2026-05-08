@@ -26,7 +26,7 @@ get_public_instruments(
 \value{
 A `data.frame` with instrument metadata (e.g., `instType`, `instId`, `uly`,
 `baseCcy`, `quoteCcy`, `settleCcy`, `ctVal`, `ctMult`, `tickSz`, `lotSz`,
-`minSz`, `expTime`, `lever`, `state`, …).
+`minSz`, `expTime`, `lever`, `state`, ...).
 }
 \description{
 Retrieve metadata for instruments of a given type.
@@ -51,10 +51,4 @@ get_public_instruments("ETH-USDT-SWAP", inst_type = "SWAP", config = cfg)
 }
 \seealso{
 [get_public_mark_price()]
-
-Other okxr-market: 
-\code{\link{get_market_candles}()},
-\code{\link{get_market_history_candles}()},
-\code{\link{get_public_mark_price}()}
 }
-\concept{okxr-market}

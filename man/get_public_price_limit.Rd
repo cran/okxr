@@ -4,7 +4,11 @@
 \alias{get_public_price_limit}
 \title{Get price limit}
 \usage{
-get_public_price_limit(inst_id, config = NULL, tz = .okx_default_tz)
+get_public_price_limit(
+  inst_id,
+  config = NULL,
+  tz = .okx_default_tz
+)
 }
 \arguments{
 \item{inst_id}{Character. Instrument ID, e.g. `"BTC-USDT-SWAP"`.}

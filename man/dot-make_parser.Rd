@@ -2,29 +2,25 @@
 % Please edit documentation in R/utils_parser.R
 \name{.make_parser}
 \alias{.make_parser}
-\title{Build a typed OKX JSON response parser (named or positional) → data.table}
+\title{Build a typed OKX JSON response parser (named or positional) to data.table}
 \usage{
-.make_parser(schema, mode = c("named", "positional"))
+.make_parser(schema, mode = c("named", "positional", "vector"))
 }
 \arguments{
-\item{schema}{A \code{data.frame} describing the response fields with columns:
-\describe{
-  \item{\code{okx}}{Field name in the raw JSON response (used as output column names).}
-  \item{\code{formal}}{Human-readable label (stored in \code{attr(, "var_labels")}).}
-  \item{\code{type}}{One of \code{"time"}, \code{"numeric"}, \code{"integer"},
-    \code{"string"}, \code{"logical"}.}
-}}
+\item{schema}{A \code{data.frame} with \code{okx}, \code{formal}, and
+\code{type} columns. Supported types are time, numeric, integer, string,
+and logical.}
 
-\item{mode}{Parsing mode; either \code{"named"} (default) for key-based access,
-or \code{"positional"} for index-based access.}
+\item{mode}{Parser mode: \code{"named"}, \code{"positional"}, or
+\code{"vector"}.}
 }
 \value{
 A function with signature \code{function(res, tz)} where:
   \describe{
     \item{\code{res}}{An \code{httr::response}. The body must decode to a list
       with \code{$code}, \code{$msg}, and \code{$data}.}
-    \item{\code{tz}}{Timezone string used for \code{"time"} fields. Millisecond
-      timestamps are converted via \code{as.POSIXct(ms/1000, tz=tz)}.}
+    \item{\code{tz}}{Time zone for \code{"time"} fields. Millisecond values
+      are converted with \code{as.POSIXct()}.}
   }
   The returned parser yields a \code{data.table} with column names from
   \code{schema$okx} and attaches variable labels as
@@ -45,11 +41,12 @@ single object, the parser wraps it as a one-row table.
   are interpreted as UNIX \emph{milliseconds}.
   \item \strong{Modes}:
     \itemize{
-      \item \code{"named"} — fields accessed via \code{okx} keys; a single object
+      \item \code{"named"} - fields accessed via \code{okx} keys; a single object
         in \code{$data} is wrapped to one row.
-      \item \code{"positional"} — fields accessed by index order of \code{schema}.
+      \item \code{"positional"} - fields accessed by index order of \code{schema}.
+      \item \code{"vector"} - scalar or vector payloads returned in one column.
     }
-  \item \strong{Attributes}: \code{attr(DT, "var_labels")} maps \code{okx} → \code{formal}.
+  \item \strong{Attributes}: \code{attr(DT, "var_labels")} maps \code{okx} to \code{formal}.
 }
 }
 \section{Errors & warnings}{

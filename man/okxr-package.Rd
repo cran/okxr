@@ -34,5 +34,10 @@ account-specific side effects.
 \author{
 \strong{Maintainer}: Oliver Zhou \email{oliver.yxzhou@gmail.com}
 
+Authors:
+\itemize{
+  \item Lily Li \email{lilyli.qc.hk@gmail.com}
+}
+
 }
 \keyword{package}

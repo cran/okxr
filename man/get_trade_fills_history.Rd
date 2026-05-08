@@ -13,6 +13,8 @@ get_trade_fills_history(
   after = NULL,
   before = NULL,
   limit = NULL,
+  begin = NULL,
+  end = NULL,
   config,
   tz = .okx_default_tz
 )
@@ -33,6 +35,10 @@ get_trade_fills_history(
 \item{before}{Character or `NULL`. Pagination cursor for newer records.}
 
 \item{limit}{Integer or `NULL`. Number of rows to request.}
+
+\item{begin}{Character or `NULL`. Begin timestamp in milliseconds.}
+
+\item{end}{Character or `NULL`. End timestamp in milliseconds.}
 
 \item{config}{List. API credentials/config.}
 

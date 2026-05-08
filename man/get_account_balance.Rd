@@ -15,7 +15,7 @@ get_account_balance(config, tz = .okx_default_tz)
 \value{
 A `data.frame` with account balance and margin metrics (e.g.,
 `totalEq`, `isoEq`, `adjEq`, `availEq`, `ordFroz`, `imr`, `mmr`, `upl`,
-`mgnRatio`, …). Timestamp columns (`uTime`) are `POSIXct`.
+`mgnRatio`, ...). Timestamp columns (`uTime`) are `POSIXct`.
 }
 \description{
 Retrieve account-level margin and equity information for your OKX account.
@@ -37,11 +37,4 @@ head(bal)
 }
 \seealso{
 [get_account_positions()], [get_account_leverage_info()]
-
-Other okxr-account: 
-\code{\link{get_account_config}()},
-\code{\link{get_account_leverage_info}()},
-\code{\link{get_account_positions_history}()},
-\code{\link{get_account_positions}()}
 }
-\concept{okxr-account}

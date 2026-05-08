@@ -78,7 +78,12 @@
 #' @param auth Logical. Whether to sign the request with OKX credentials.
 #'
 #' @return An `httr` response object, or `NULL` if the request fails.
-.execute_get_action <- function(api_path, query_string, config = NULL, auth = TRUE) {
+.execute_get_action <- function(
+  api_path,
+  query_string,
+  config = NULL,
+  auth = TRUE
+) {
   base_url <- .okx_base_url
   httr_method <- "GET"
   req <- .build_request(httr_method, base_url, api_path, query_string, config, auth = auth)

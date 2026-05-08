@@ -6,13 +6,17 @@
 \usage{
 get_copy_trade_settings(
   unique_code,
+  inst_type = NULL,
   config,
   tz = .okx_default_tz,
-  uniqueCode = unique_code
+  uniqueCode = unique_code,
+  instType = inst_type
 )
 }
 \arguments{
 \item{unique_code}{Character. Lead trader unique code.}
+
+\item{inst_type}{Character or `NULL`. Instrument type filter.}
 
 \item{config}{List. API credentials/config, typically containing
 `api_key`, `secret_key`, and `passphrase`.}
@@ -20,6 +24,8 @@ get_copy_trade_settings(
 \item{tz}{Character. Time zone for parsing timestamps. Default `"Asia/Hong_Kong"`.}
 
 \item{uniqueCode}{Deprecated alias for `unique_code`.}
+
+\item{instType}{Deprecated alias for `inst_type`.}
 }
 \value{
 A `data.frame` with fields like `copyMode` and `copyState`.
@@ -43,10 +49,4 @@ get_copy_trade_settings(unique_code = "1129E65755274C36", config = cfg)
 }
 \seealso{
 [get_copy_trade_my_leaders()], [get_copy_trade_current_subpos()]
-
-Other okxr-copytrading: 
-\code{\link{get_copy_trade_current_subpos}()},
-\code{\link{get_copy_trade_historical_subpos}()},
-\code{\link{get_copy_trade_my_leaders}()}
 }
-\concept{okxr-copytrading}

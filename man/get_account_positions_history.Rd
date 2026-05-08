@@ -36,11 +36,4 @@ tail(hist)
 }
 \seealso{
 [get_account_positions()]
-
-Other okxr-account: 
-\code{\link{get_account_balance}()},
-\code{\link{get_account_config}()},
-\code{\link{get_account_leverage_info}()},
-\code{\link{get_account_positions}()}
 }
-\concept{okxr-account}

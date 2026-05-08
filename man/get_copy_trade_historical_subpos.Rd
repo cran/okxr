@@ -4,9 +4,27 @@
 \alias{get_copy_trade_historical_subpos}
 \title{Get historical copy trading subpositions}
 \usage{
-get_copy_trade_historical_subpos(config, tz = .okx_default_tz)
+get_copy_trade_historical_subpos(
+  inst_type = NULL,
+  inst_id = NULL,
+  after = NULL,
+  before = NULL,
+  limit = NULL,
+  config,
+  tz = .okx_default_tz
+)
 }
 \arguments{
+\item{inst_type}{Character or `NULL`. Instrument type filter.}
+
+\item{inst_id}{Character or `NULL`. Instrument ID filter.}
+
+\item{after}{Character or `NULL`. Pagination cursor for earlier records.}
+
+\item{before}{Character or `NULL`. Pagination cursor for newer records.}
+
+\item{limit}{Integer or `NULL`. Number of rows to request.}
+
 \item{config}{List. API credentials/config, typically containing
 `api_key`, `secret_key`, and `passphrase`.}
 
@@ -35,10 +53,4 @@ head(hist)
 }
 \seealso{
 [get_copy_trade_current_subpos()]
-
-Other okxr-copytrading: 
-\code{\link{get_copy_trade_current_subpos}()},
-\code{\link{get_copy_trade_my_leaders}()},
-\code{\link{get_copy_trade_settings}()}
 }
-\concept{okxr-copytrading}

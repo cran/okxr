@@ -44,10 +44,4 @@ get_public_mark_price("BTC-USDT", inst_type = "SWAP", config = cfg)
 }
 \seealso{
 [get_public_instruments()]
-
-Other okxr-market: 
-\code{\link{get_market_candles}()},
-\code{\link{get_market_history_candles}()},
-\code{\link{get_public_instruments}()}
 }
-\concept{okxr-market}

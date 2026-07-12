@@ -17,6 +17,7 @@ post_trade_amend_order(
   px_amend_type = NULL,
   attach_algo_ords = NULL,
   speed_bump = NULL,
+  rpi_taker_access = NULL,
   config,
   tz = .okx_default_tz
 )
@@ -46,6 +47,9 @@ amendment fails.}
 \item{attach_algo_ords}{Optional attached TP/SL amendment list.}
 
 \item{speed_bump}{Optional event-contract speed bump.}
+
+\item{rpi_taker_access}{Optional logical. Whether the amended order can take
+RPI liquidity.}
 
 \item{config}{A list with API credentials.}
 

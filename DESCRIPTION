@@ -1,6 +1,6 @@
 Package: okxr
 Title: R Interface to the 'OKX' REST API
-Version: 0.4.5
+Version: 0.4.7
 Authors@R: c(
     person('Oliver', 'Zhou', email = 'oliver.yxzhou@gmail.com', role = c('aut', 'cre')),
     person('Lily', 'Li', email = 'lilyli.qc.hk@gmail.com', role = 'aut')
@@ -27,8 +27,8 @@ Collate: okxr-package.R def_constants.R utils_request_helpers.R
         wrappers_post_trade.R
 URL: https://github.com/OliverLDS/okxr
 BugReports: https://github.com/OliverLDS/okxr/issues
-RoxygenNote: 7.2.3
+RoxygenNote: 8.0.0
 NeedsCompilation: no
-Packaged: 2026-05-08 08:16:44 UTC; oliver
+Packaged: 2026-07-12 01:06:16 UTC; oliver
 Repository: CRAN
-Date/Publication: 2026-05-08 11:00:02 UTC
+Date/Publication: 2026-07-12 06:20:02 UTC

@@ -7,8 +7,8 @@
 post_trade_batch_orders(orders, config, tz = .okx_default_tz)
 }
 \arguments{
-\item{orders}{List of order specs.
-See \code{post_trade_order()}.}
+\item{orders}{List of order specs using the snake_case names from
+[post_trade_order()].}
 
 \item{config}{A list with API credentials.}
 

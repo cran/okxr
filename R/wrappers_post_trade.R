@@ -26,7 +26,10 @@
   px_vol = NULL,
   speed_bump = NULL,
   outcome = NULL,
-  is_elp_taker_access = NULL
+  is_elp_taker_access = NULL,
+  rpi_taker_access = NULL,
+  rpi_px_round = NULL,
+  slippage_pct = NULL
 ) {
   .okx_compact_body(list(
     instId = inst_id,
@@ -50,7 +53,10 @@
     pxVol = px_vol,
     speedBump = speed_bump,
     outcome = outcome,
-    isElpTakerAccess = if (is.null(is_elp_taker_access)) NULL else tolower(as.character(is_elp_taker_access))
+    isElpTakerAccess = if (is.null(is_elp_taker_access)) NULL else tolower(as.character(is_elp_taker_access)),
+    rpiTakerAccess = if (is.null(rpi_taker_access)) NULL else tolower(as.character(rpi_taker_access)),
+    rpiPxRound = rpi_px_round,
+    slippagePct = slippage_pct
   ))
 }
 
@@ -66,7 +72,8 @@
   new_px_vol = NULL,
   px_amend_type = NULL,
   attach_algo_ords = NULL,
-  speed_bump = NULL
+  speed_bump = NULL,
+  rpi_taker_access = NULL
 ) {
   .okx_compact_body(list(
     instId = inst_id,
@@ -80,7 +87,52 @@
     newPxVol = new_px_vol,
     pxAmendType = px_amend_type,
     attachAlgoOrds = attach_algo_ords,
-    speedBump = speed_bump
+    speedBump = speed_bump,
+    rpiTakerAccess = if (is.null(rpi_taker_access)) NULL else tolower(as.character(rpi_taker_access))
+  ))
+}
+
+.okx_trade_order_algo_body <- function(
+  inst_id,
+  td_mode,
+  side,
+  ord_type,
+  sz = NULL,
+  algo_cl_ord_id = NULL,
+  pos_side = NULL,
+  reduce_only = NULL,
+  tgt_ccy = NULL,
+  tag = NULL,
+  trigger_px = NULL,
+  order_px = NULL,
+  trigger_px_type = NULL,
+  advance_ord_type = NULL,
+  adv_chase_params = NULL,
+  attach_algo_ords = NULL
+) {
+  if (identical(advance_ord_type, "chase") && is.null(adv_chase_params)) {
+    stop("`adv_chase_params` is required when `advance_ord_type` is 'chase'.", call. = FALSE)
+  }
+  if (identical(advance_ord_type, "chase") && !is.null(attach_algo_ords)) {
+    stop("`attach_algo_ords` cannot be used with chase algo orders.", call. = FALSE)
+  }
+  .okx_compact_body(list(
+    instId = inst_id,
+    tdMode = td_mode,
+    side = side,
+    ordType = ord_type,
+    sz = sz,
+    algoClOrdId = algo_cl_ord_id,
+    posSide = pos_side,
+    reduceOnly = if (is.null(reduce_only)) NULL else tolower(as.character(reduce_only)),
+    tgtCcy = tgt_ccy,
+    tag = tag,
+    triggerPx = trigger_px,
+    orderPx = order_px,
+    triggerPxType = trigger_px_type,
+    advanceOrdType = advance_ord_type,
+    advChaseParams = adv_chase_params,
+    attachAlgoOrds = attach_algo_ords
   ))
 }
 
@@ -112,7 +164,8 @@
   new_trigger_px = NULL,
   new_ord_px = NULL,
   new_trigger_px_type = NULL,
-  attach_algo_ords = NULL
+  attach_algo_ords = NULL,
+  adv_chase_params = NULL
 ) {
   .okx_compact_body(list(
     instId = inst_id,
@@ -130,7 +183,8 @@
     newTriggerPx = new_trigger_px,
     newOrdPx = new_ord_px,
     newTriggerPxType = new_trigger_px_type,
-    attachAlgoOrds = attach_algo_ords
+    attachAlgoOrds = attach_algo_ords,
+    advChaseParams = adv_chase_params
   ))
 }
 
@@ -149,6 +203,13 @@
 #' @param tgt_ccy Optional. Quote currency (e.g., \code{"base"}, \code{"quote"}).
 #' @param cl_ord_id Optional. Custom client order ID (auto-generated if NULL).
 #' @param tag Optional. Tag used for identifying the strategy or bot.
+#' @param is_elp_taker_access Optional logical. Whether IOC orders may take ELP
+#'   liquidity.
+#' @param rpi_taker_access Optional logical. Whether the order can take RPI
+#'   liquidity.
+#' @param rpi_px_round Optional RPI price rounding mode.
+#' @param slippage_pct Optional maximum acceptable slippage for SPOT and margin
+#'   market orders.
 #' @param config A list with API credentials: \code{api_key}, \code{secret_key}, \code{passphrase}.
 #' @param tz Timezone for parsing any timestamps (default: \code{"Asia/Hong_Kong"}).
 #'
@@ -167,6 +228,10 @@ post_trade_order <- function(
   tgt_ccy = NULL,
   cl_ord_id = NULL,
   tag = NULL,
+  is_elp_taker_access = NULL,
+  rpi_taker_access = NULL,
+  rpi_px_round = NULL,
+  slippage_pct = NULL,
   config,
   tz = .okx_default_tz
 ) {
@@ -185,7 +250,11 @@ post_trade_order <- function(
     reduce_only = reduce_only,
     tgt_ccy = tgt_ccy,
     cl_ord_id = cl_ord_id,
-    tag = tag
+    tag = tag,
+    is_elp_taker_access = is_elp_taker_access,
+    rpi_taker_access = rpi_taker_access,
+    rpi_px_round = rpi_px_round,
+    slippage_pct = slippage_pct
   )
 
   .posts$trade_order(body_list = body_list, tz = tz, config = config)
@@ -308,12 +377,14 @@ post_trade_cancel_batch_orders <- function(
 #' @param px_amend_type Optional price amendment mode.
 #' @param attach_algo_ords Optional attached TP/SL amendment list.
 #' @param speed_bump Optional event-contract speed bump.
+#' @param rpi_taker_access Optional logical. Whether the amended order can take
+#'   RPI liquidity.
 #' @param config A list with API credentials.
 #' @param tz Timezone for parsing response timestamps.
 #'
 #' @return A `data.frame` describing the amendment request result.
 #' @export
-post_trade_amend_order <- function(inst_id, ord_id = NULL, cl_ord_id = NULL, req_id = NULL, new_sz = NULL, new_px = NULL, cxl_on_fail = NULL, new_px_usd = NULL, new_px_vol = NULL, px_amend_type = NULL, attach_algo_ords = NULL, speed_bump = NULL, config, tz = .okx_default_tz) {
+post_trade_amend_order <- function(inst_id, ord_id = NULL, cl_ord_id = NULL, req_id = NULL, new_sz = NULL, new_px = NULL, cxl_on_fail = NULL, new_px_usd = NULL, new_px_vol = NULL, px_amend_type = NULL, attach_algo_ords = NULL, speed_bump = NULL, rpi_taker_access = NULL, config, tz = .okx_default_tz) {
   .okx_assert_exactly_one_present(ord_id, cl_ord_id, names = c("ord_id", "cl_ord_id"))
   .okx_assert_any_field_present(
     list(
@@ -324,9 +395,10 @@ post_trade_amend_order <- function(inst_id, ord_id = NULL, cl_ord_id = NULL, req
       new_px_vol = new_px_vol,
       px_amend_type = px_amend_type,
       attach_algo_ords = attach_algo_ords,
-      speed_bump = speed_bump
+      speed_bump = speed_bump,
+      rpi_taker_access = rpi_taker_access
     ),
-    c("new_sz", "new_px", "cxl_on_fail", "new_px_usd", "new_px_vol", "px_amend_type", "attach_algo_ords", "speed_bump"),
+    c("new_sz", "new_px", "cxl_on_fail", "new_px_usd", "new_px_vol", "px_amend_type", "attach_algo_ords", "speed_bump", "rpi_taker_access"),
     "amendment request"
   )
   body_list <- .okx_trade_amend_body(
@@ -341,7 +413,8 @@ post_trade_amend_order <- function(inst_id, ord_id = NULL, cl_ord_id = NULL, req
     new_px_vol = new_px_vol,
     px_amend_type = px_amend_type,
     attach_algo_ords = attach_algo_ords,
-    speed_bump = speed_bump
+    speed_bump = speed_bump,
+    rpi_taker_access = rpi_taker_access
   )
   .posts$trade_amend_order(body_list = body_list, tz = tz, config = config)
 }
@@ -371,7 +444,7 @@ post_trade_amend_batch_orders <- function(
       .okx_assert_exactly_one_present(order$ord_id, order$cl_ord_id, names = c("ord_id", "cl_ord_id"))
       .okx_assert_any_field_present(
         order,
-        c("new_sz", "new_px", "cxl_on_fail", "new_px_usd", "new_px_vol", "px_amend_type", "attach_algo_ords", "speed_bump"),
+        c("new_sz", "new_px", "cxl_on_fail", "new_px_usd", "new_px_vol", "px_amend_type", "attach_algo_ords", "speed_bump", "rpi_taker_access"),
         paste0("orders[[", i, "]]")
       )
       do.call(.okx_trade_amend_body, order)
@@ -399,12 +472,16 @@ post_trade_amend_batch_orders <- function(
 #' @param attach_algo_ords Optional attached TP/SL list.
 #' @param speed_bump Optional event-contract speed bump.
 #' @param outcome Optional event-contract outcome.
+#' @param is_elp_taker_access Optional logical. Whether IOC orders may take ELP
+#'   liquidity.
+#' @param slippage_pct Optional maximum acceptable slippage for SPOT and margin
+#'   market orders.
 #' @param config A list with API credentials.
 #' @param tz Timezone for parsing response timestamps.
 #'
 #' @return A `data.frame` with projected account metrics after the precheck.
 #' @export
-post_trade_order_precheck <- function(inst_id, td_mode, side, ord_type, sz, ccy = NULL, cl_ord_id = NULL, tag = NULL, pos_side = NULL, px = NULL, reduce_only = NULL, tgt_ccy = NULL, attach_algo_ords = NULL, speed_bump = NULL, outcome = NULL, config, tz = .okx_default_tz) {
+post_trade_order_precheck <- function(inst_id, td_mode, side, ord_type, sz, ccy = NULL, cl_ord_id = NULL, tag = NULL, pos_side = NULL, px = NULL, reduce_only = NULL, tgt_ccy = NULL, attach_algo_ords = NULL, speed_bump = NULL, outcome = NULL, is_elp_taker_access = NULL, slippage_pct = NULL, config, tz = .okx_default_tz) {
   body_list <- .okx_trade_order_body(
     inst_id = inst_id,
     td_mode = td_mode,
@@ -420,9 +497,60 @@ post_trade_order_precheck <- function(inst_id, td_mode, side, ord_type, sz, ccy 
     tgt_ccy = tgt_ccy,
     attach_algo_ords = attach_algo_ords,
     speed_bump = speed_bump,
-    outcome = outcome
+    outcome = outcome,
+    is_elp_taker_access = is_elp_taker_access,
+    slippage_pct = slippage_pct
   )
   .posts$trade_order_precheck(body_list = body_list, tz = tz, config = config)
+}
+
+#' Place an Algo Order
+#'
+#' Submit an algo order, including chase trigger orders where supported by OKX.
+#'
+#' @param inst_id Instrument ID.
+#' @param td_mode Trade mode.
+#' @param side Order side.
+#' @param ord_type Algo order type.
+#' @param sz Optional order size.
+#' @param algo_cl_ord_id Optional client-supplied algo order ID.
+#' @param pos_side Optional position side.
+#' @param reduce_only Optional logical reduce-only flag.
+#' @param tgt_ccy Optional target currency mode.
+#' @param tag Optional order tag.
+#' @param trigger_px Optional trigger price for trigger algo orders.
+#' @param order_px Optional order price for trigger algo orders.
+#' @param trigger_px_type Optional trigger price type.
+#' @param advance_ord_type Optional advanced order type, e.g. `"chase"`.
+#' @param adv_chase_params Optional list of chase-order parameters required
+#'   when `advance_ord_type = "chase"`.
+#' @param attach_algo_ords Optional attached TP/SL list. Not valid with chase
+#'   algo orders.
+#' @param config A list with API credentials.
+#' @param tz Timezone for parsing response timestamps.
+#'
+#' @return A `data.frame` describing the algo order submission result.
+#' @export
+post_trade_order_algo <- function(inst_id, td_mode, side, ord_type, sz = NULL, algo_cl_ord_id = NULL, pos_side = NULL, reduce_only = NULL, tgt_ccy = NULL, tag = NULL, trigger_px = NULL, order_px = NULL, trigger_px_type = NULL, advance_ord_type = NULL, adv_chase_params = NULL, attach_algo_ords = NULL, config, tz = .okx_default_tz) {
+  body_list <- .okx_trade_order_algo_body(
+    inst_id = inst_id,
+    td_mode = td_mode,
+    side = side,
+    ord_type = ord_type,
+    sz = sz,
+    algo_cl_ord_id = algo_cl_ord_id,
+    pos_side = pos_side,
+    reduce_only = reduce_only,
+    tgt_ccy = tgt_ccy,
+    tag = tag,
+    trigger_px = trigger_px,
+    order_px = order_px,
+    trigger_px_type = trigger_px_type,
+    advance_ord_type = advance_ord_type,
+    adv_chase_params = adv_chase_params,
+    attach_algo_ords = attach_algo_ords
+  )
+  .posts$trade_order_algo(body_list = body_list, tz = tz, config = config)
 }
 
 #' Set Cancel-All-After
@@ -492,12 +620,13 @@ post_trade_cancel_algos <- function(orders, config, tz = .okx_default_tz) {
 #' @param new_ord_px Optional new order price for trigger orders.
 #' @param new_trigger_px_type Optional new trigger price type for trigger orders.
 #' @param attach_algo_ords Optional attached TP/SL amendment list.
+#' @param adv_chase_params Optional amended chase-order parameters.
 #' @param config A list with API credentials.
 #' @param tz Timezone for parsing response timestamps.
 #'
 #' @return A `data.frame` describing the algo amendment result.
 #' @export
-post_trade_amend_algos <- function(inst_id, algo_id = NULL, algo_cl_ord_id = NULL, cxl_on_fail = NULL, req_id = NULL, new_sz = NULL, new_tp_trigger_px = NULL, new_tp_ord_px = NULL, new_sl_trigger_px = NULL, new_sl_ord_px = NULL, new_tp_trigger_px_type = NULL, new_sl_trigger_px_type = NULL, new_trigger_px = NULL, new_ord_px = NULL, new_trigger_px_type = NULL, attach_algo_ords = NULL, config, tz = .okx_default_tz) {
+post_trade_amend_algos <- function(inst_id, algo_id = NULL, algo_cl_ord_id = NULL, cxl_on_fail = NULL, req_id = NULL, new_sz = NULL, new_tp_trigger_px = NULL, new_tp_ord_px = NULL, new_sl_trigger_px = NULL, new_sl_ord_px = NULL, new_tp_trigger_px_type = NULL, new_sl_trigger_px_type = NULL, new_trigger_px = NULL, new_ord_px = NULL, new_trigger_px_type = NULL, attach_algo_ords = NULL, adv_chase_params = NULL, config, tz = .okx_default_tz) {
   .okx_assert_exactly_one_present(algo_id, algo_cl_ord_id, names = c("algo_id", "algo_cl_ord_id"))
   .okx_assert_any_field_present(
     list(
@@ -512,9 +641,10 @@ post_trade_amend_algos <- function(inst_id, algo_id = NULL, algo_cl_ord_id = NUL
       new_trigger_px = new_trigger_px,
       new_ord_px = new_ord_px,
       new_trigger_px_type = new_trigger_px_type,
-      attach_algo_ords = attach_algo_ords
+      attach_algo_ords = attach_algo_ords,
+      adv_chase_params = adv_chase_params
     ),
-    c("cxl_on_fail", "new_sz", "new_tp_trigger_px", "new_tp_ord_px", "new_sl_trigger_px", "new_sl_ord_px", "new_tp_trigger_px_type", "new_sl_trigger_px_type", "new_trigger_px", "new_ord_px", "new_trigger_px_type", "attach_algo_ords"),
+    c("cxl_on_fail", "new_sz", "new_tp_trigger_px", "new_tp_ord_px", "new_sl_trigger_px", "new_sl_ord_px", "new_tp_trigger_px_type", "new_sl_trigger_px_type", "new_trigger_px", "new_ord_px", "new_trigger_px_type", "attach_algo_ords", "adv_chase_params"),
     "algo amendment request"
   )
   body_list <- .okx_trade_algo_amend_body(
@@ -533,7 +663,8 @@ post_trade_amend_algos <- function(inst_id, algo_id = NULL, algo_cl_ord_id = NUL
     new_trigger_px = new_trigger_px,
     new_ord_px = new_ord_px,
     new_trigger_px_type = new_trigger_px_type,
-    attach_algo_ords = attach_algo_ords
+    attach_algo_ords = attach_algo_ords,
+    adv_chase_params = adv_chase_params
   )
   .posts$trade_amend_algos(body_list = body_list, tz = tz, config = config)
 }

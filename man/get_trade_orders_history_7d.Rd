@@ -4,11 +4,7 @@
 \alias{get_trade_orders_history_7d}
 \title{Get trade orders history (last 7 days)}
 \usage{
-get_trade_orders_history_7d(
-  inst_type = "SWAP",
-  config,
-  tz = .okx_default_tz
-)
+get_trade_orders_history_7d(inst_type = "SWAP", config, tz = .okx_default_tz)
 }
 \arguments{
 \item{inst_type}{Character. Instrument type. One of `"SPOT"`, `"MARGIN"`,

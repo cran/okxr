@@ -21,6 +21,7 @@ post_trade_amend_algos(
   new_ord_px = NULL,
   new_trigger_px_type = NULL,
   attach_algo_ords = NULL,
+  adv_chase_params = NULL,
   config,
   tz = .okx_default_tz
 )
@@ -58,6 +59,8 @@ amendment fails.}
 \item{new_trigger_px_type}{Optional new trigger price type for trigger orders.}
 
 \item{attach_algo_ords}{Optional attached TP/SL amendment list.}
+
+\item{adv_chase_params}{Optional amended chase-order parameters.}
 
 \item{config}{A list with API credentials.}
 

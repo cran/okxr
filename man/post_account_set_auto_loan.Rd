@@ -4,11 +4,7 @@
 \alias{post_account_set_auto_loan}
 \title{Set Account Auto Loan}
 \usage{
-post_account_set_auto_loan(
-  auto_loan = TRUE,
-  tz = .okx_default_tz,
-  config
-)
+post_account_set_auto_loan(auto_loan = TRUE, tz = .okx_default_tz, config)
 }
 \arguments{
 \item{auto_loan}{Logical. Whether auto loan should be enabled.}

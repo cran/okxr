@@ -8,6 +8,7 @@ get_asset_bills(
   ccy = NULL,
   type = NULL,
   client_id = NULL,
+  third_party_type = NULL,
   after = NULL,
   before = NULL,
   limit = NULL,
@@ -21,6 +22,8 @@ get_asset_bills(
 \item{type}{Character or `NULL`. Bill type filter.}
 
 \item{client_id}{Character or `NULL`. Client-supplied transfer or withdrawal ID.}
+
+\item{third_party_type}{Character or `NULL`. Third-party bill type filter.}
 
 \item{after}{Character or `NULL`. Pagination cursor for earlier records.}
 

@@ -4,10 +4,7 @@
 \alias{get_copy_trade_public_config}
 \title{Get public copy trading config}
 \usage{
-get_copy_trade_public_config(
-  inst_type = NULL,
-  tz = .okx_default_tz
-)
+get_copy_trade_public_config(inst_type = NULL, tz = .okx_default_tz)
 }
 \arguments{
 \item{inst_type}{Character or `NULL`. Instrument type filter.}

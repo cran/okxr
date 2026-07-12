@@ -4,10 +4,7 @@
 \alias{get_trade_one_click_repay_currency_list_v2}
 \title{Get one-click repay currency list v2}
 \usage{
-get_trade_one_click_repay_currency_list_v2(
-  config,
-  tz = .okx_default_tz
-)
+get_trade_one_click_repay_currency_list_v2(config, tz = .okx_default_tz)
 }
 \arguments{
 \item{config}{List. API credentials/config.}

@@ -238,10 +238,12 @@ get_account_bills_archive <- function(inst_type = NULL, ccy = NULL, mgn_mode = N
 #' return a subset of instruments available to the authenticated account.
 #'
 #' @param inst_type Character. Instrument type. One of `"SPOT"`, `"MARGIN"`,
-#'   `"SWAP"`, `"FUTURES"`, `"OPTION"`.
+#'   `"SWAP"`, `"FUTURES"`, `"OPTION"`, or `"EVENTS"`.
 #' @param uly Character or `NULL`. Underlying, where applicable.
 #' @param inst_family Character or `NULL`. Instrument family filter.
 #' @param inst_id Character or `NULL`. Specific instrument ID filter.
+#' @param series_id Character or `NULL`. Event-contract series ID. Required by
+#'   OKX when `inst_type = "EVENTS"`.
 #' @param config List. API credentials/config.
 #' @param tz Character. Time zone for parsing timestamps. Default `"Asia/Hong_Kong"`.
 #'
@@ -250,12 +252,13 @@ get_account_bills_archive <- function(inst_type = NULL, ccy = NULL, mgn_mode = N
 #'   timestamps, and state where returned by OKX.
 #'
 #' @export
-get_account_instruments <- function(inst_type, uly = NULL, inst_family = NULL, inst_id = NULL, config, tz = .okx_default_tz) {
+get_account_instruments <- function(inst_type, uly = NULL, inst_family = NULL, inst_id = NULL, series_id = NULL, config, tz = .okx_default_tz) {
   query_string <- .okx_build_query(
     instType = inst_type,
     uly = uly,
     instFamily = inst_family,
-    instId = inst_id
+    instId = inst_id,
+    seriesId = series_id
   )
   .gets$account_instruments(query_string = query_string, config = config, tz = tz)
 }
@@ -417,6 +420,19 @@ get_account_interest_rate <- function(
 get_account_subtypes <- function(type = NULL, config, tz = .okx_default_tz) {
   query_string <- .okx_build_query(type = type)
   .gets$account_subtypes(query_string = query_string, config = config, tz = tz)
+}
+
+#' Get account bill types
+#'
+#' Alias for [get_account_subtypes()] using OKX's current endpoint label.
+#'
+#' @inheritParams get_account_subtypes
+#'
+#' @return A `data.frame` with bill type descriptions and JSON-encoded
+#'   `subTypeDetails`.
+#' @export
+get_account_bill_types <- function(type = NULL, config, tz = .okx_default_tz) {
+  get_account_subtypes(type = type, config = config, tz = tz)
 }
 
 #' Get account leverage adjustment estimate

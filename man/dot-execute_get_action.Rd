@@ -4,12 +4,7 @@
 \alias{.execute_get_action}
 \title{Execute a GET request to OKX}
 \usage{
-.execute_get_action(
-  api_path,
-  query_string,
-  config = NULL,
-  auth = TRUE
-)
+.execute_get_action(api_path, query_string, config = NULL, auth = TRUE)
 }
 \arguments{
 \item{api_path}{API path (e.g., "/api/v5/account/balance").}

@@ -4,11 +4,7 @@
 \alias{post_trade_cancel_batch_orders}
 \title{Cancel Multiple Trade Orders}
 \usage{
-post_trade_cancel_batch_orders(
-  orders,
-  config,
-  tz = .okx_default_tz
-)
+post_trade_cancel_batch_orders(orders, config, tz = .okx_default_tz)
 }
 \arguments{
 \item{orders}{List of cancellation specification lists containing `inst_id`

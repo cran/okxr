@@ -72,13 +72,13 @@ test_that(".okx_request_timeout validates timeout sources", {
 test_that(".build_request can build unsigned public requests without config", {
   req <- okxr:::.build_request(
     httr_method = "GET",
-    base_url = "https://www.okx.com",
+    base_url = "https://openapi.okx.com",
     api_path = "/api/v5/public/time",
     query_string = "",
     auth = FALSE
   )
 
-  expect_equal(req$url, "https://www.okx.com/api/v5/public/time")
+  expect_equal(req$url, "https://openapi.okx.com/api/v5/public/time")
   expect_null(req$headers)
 })
 
@@ -98,7 +98,7 @@ test_that(".execute_get_action handles unsigned success, HTTP error, and request
 
   res <- okxr:::.execute_get_action("/api/v5/public/time", "", auth = FALSE)
   expect_s3_class(res, "response")
-  expect_equal(called$url, "https://www.okx.com/api/v5/public/time")
+  expect_equal(called$url, "https://openapi.okx.com/api/v5/public/time")
   expect_false(called$has_headers)
 
   testthat::local_mocked_bindings(

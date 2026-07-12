@@ -9,19 +9,23 @@ get_account_instruments(
   uly = NULL,
   inst_family = NULL,
   inst_id = NULL,
+  series_id = NULL,
   config,
   tz = .okx_default_tz
 )
 }
 \arguments{
 \item{inst_type}{Character. Instrument type. One of `"SPOT"`, `"MARGIN"`,
-`"SWAP"`, `"FUTURES"`, `"OPTION"`.}
+`"SWAP"`, `"FUTURES"`, `"OPTION"`, or `"EVENTS"`.}
 
 \item{uly}{Character or `NULL`. Underlying, where applicable.}
 
 \item{inst_family}{Character or `NULL`. Instrument family filter.}
 
 \item{inst_id}{Character or `NULL`. Specific instrument ID filter.}
+
+\item{series_id}{Character or `NULL`. Event-contract series ID. Required by
+OKX when `inst_type = "EVENTS"`.}
 
 \item{config}{List. API credentials/config.}
 

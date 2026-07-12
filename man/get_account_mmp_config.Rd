@@ -4,11 +4,7 @@
 \alias{get_account_mmp_config}
 \title{Get account MMP configuration}
 \usage{
-get_account_mmp_config(
-  inst_family = NULL,
-  config,
-  tz = .okx_default_tz
-)
+get_account_mmp_config(inst_family = NULL, config, tz = .okx_default_tz)
 }
 \arguments{
 \item{inst_family}{Character or `NULL`. Instrument family filter.}

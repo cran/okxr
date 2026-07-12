@@ -4,11 +4,7 @@
 \alias{get_account_position_risk}
 \title{Get account and position risk snapshot}
 \usage{
-get_account_position_risk(
-  inst_type = NULL,
-  config,
-  tz = .okx_default_tz
-)
+get_account_position_risk(inst_type = NULL, config, tz = .okx_default_tz)
 }
 \arguments{
 \item{inst_type}{Character or `NULL`. Instrument type filter. One of

@@ -7,6 +7,7 @@
 get_public_instruments(
   inst_id = NULL,
   inst_type = "SWAP",
+  series_id = NULL,
   config = NULL,
   tz = .okx_default_tz
 )
@@ -16,7 +17,10 @@ get_public_instruments(
 `NULL` to fetch all instruments of `inst_type`.}
 
 \item{inst_type}{Character. Instrument type. One of `"SPOT"`, `"MARGIN"`,
-`"SWAP"` (default), `"FUTURES"`, `"OPTION"`.}
+`"SWAP"` (default), `"FUTURES"`, `"OPTION"`, or `"EVENTS"`.}
+
+\item{series_id}{Character or `NULL`. Event-contract series ID. Required by
+OKX when `inst_type = "EVENTS"`.}
 
 \item{config}{Optional list. Public endpoint request options, such as
 `timeout`; credentials are not required.}

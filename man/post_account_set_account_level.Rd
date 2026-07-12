@@ -4,11 +4,7 @@
 \alias{post_account_set_account_level}
 \title{Set Account Level}
 \usage{
-post_account_set_account_level(
-  acct_lv,
-  tz = .okx_default_tz,
-  config
-)
+post_account_set_account_level(acct_lv, tz = .okx_default_tz, config)
 }
 \arguments{
 \item{acct_lv}{Account level string, such as `"1"`, `"2"`, `"3"`, or `"4"`.}

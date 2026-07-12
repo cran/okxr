@@ -4,11 +4,7 @@
 \alias{post_account_set_greeks}
 \title{Set Account Greeks Display Type}
 \usage{
-post_account_set_greeks(
-  greeks_type,
-  tz = .okx_default_tz,
-  config
-)
+post_account_set_greeks(greeks_type, tz = .okx_default_tz, config)
 }
 \arguments{
 \item{greeks_type}{Greeks display type, typically `"PA"` or `"BS"`.}

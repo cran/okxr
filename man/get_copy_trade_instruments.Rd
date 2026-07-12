@@ -4,11 +4,7 @@
 \alias{get_copy_trade_instruments}
 \title{Get copy trading instruments}
 \usage{
-get_copy_trade_instruments(
-  inst_type = NULL,
-  config,
-  tz = .okx_default_tz
-)
+get_copy_trade_instruments(inst_type = NULL, config, tz = .okx_default_tz)
 }
 \arguments{
 \item{inst_type}{Character or `NULL`. Instrument type filter.}

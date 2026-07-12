@@ -4,11 +4,7 @@
 \alias{get_public_block_trades}
 \title{Get public block trades}
 \usage{
-get_public_block_trades(
-  inst_id,
-  config = NULL,
-  tz = .okx_default_tz
-)
+get_public_block_trades(inst_id, config = NULL, tz = .okx_default_tz)
 }
 \arguments{
 \item{inst_id}{Character. Instrument ID.}

@@ -4,11 +4,7 @@
 \alias{get_account_interest_rate}
 \title{Get account borrowing interest rates}
 \usage{
-get_account_interest_rate(
-  ccy = NULL,
-  config,
-  tz = .okx_default_tz
-)
+get_account_interest_rate(ccy = NULL, config, tz = .okx_default_tz)
 }
 \arguments{
 \item{ccy}{Character or `NULL`. Currency filter, e.g. `"BTC"`.}

@@ -4,11 +4,7 @@
 \alias{get_account_max_withdrawal}
 \title{Get account maximum withdrawals}
 \usage{
-get_account_max_withdrawal(
-  ccy = NULL,
-  config,
-  tz = .okx_default_tz
-)
+get_account_max_withdrawal(ccy = NULL, config, tz = .okx_default_tz)
 }
 \arguments{
 \item{ccy}{Character or `NULL`. One currency or a comma-separated list of up

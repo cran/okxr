@@ -4,11 +4,7 @@
 \alias{post_account_set_position_mode}
 \title{Set Account Position Mode}
 \usage{
-post_account_set_position_mode(
-  pos_mode,
-  tz = .okx_default_tz,
-  config
-)
+post_account_set_position_mode(pos_mode, tz = .okx_default_tz, config)
 }
 \arguments{
 \item{pos_mode}{Position mode. Use `long_short_mode` or `net_mode`.}

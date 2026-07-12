@@ -4,12 +4,7 @@
 \alias{get_account_leverage_info}
 \title{Get account leverage settings}
 \usage{
-get_account_leverage_info(
-  inst_id,
-  mgn_mode,
-  config,
-  tz = .okx_default_tz
-)
+get_account_leverage_info(inst_id, mgn_mode, config, tz = .okx_default_tz)
 }
 \arguments{
 \item{inst_id}{Character. Instrument ID, e.g. `"BTC-USDT"`.}

@@ -20,6 +20,8 @@ post_trade_order_precheck(
   attach_algo_ords = NULL,
   speed_bump = NULL,
   outcome = NULL,
+  is_elp_taker_access = NULL,
+  slippage_pct = NULL,
   config,
   tz = .okx_default_tz
 )
@@ -54,6 +56,12 @@ post_trade_order_precheck(
 \item{speed_bump}{Optional event-contract speed bump.}
 
 \item{outcome}{Optional event-contract outcome.}
+
+\item{is_elp_taker_access}{Optional logical. Whether IOC orders may take ELP
+liquidity.}
+
+\item{slippage_pct}{Optional maximum acceptable slippage for SPOT and margin
+market orders.}
 
 \item{config}{A list with API credentials.}
 

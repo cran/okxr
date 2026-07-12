@@ -4,11 +4,7 @@
 \alias{get_account_precheck_set_delta_neutral}
 \title{Precheck delta-neutral strategy switch}
 \usage{
-get_account_precheck_set_delta_neutral(
-  stgy_type,
-  config,
-  tz = .okx_default_tz
-)
+get_account_precheck_set_delta_neutral(stgy_type, config, tz = .okx_default_tz)
 }
 \arguments{
 \item{stgy_type}{Character or numeric. Strategy type. `"0"` for general or

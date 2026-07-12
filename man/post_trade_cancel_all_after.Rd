@@ -4,12 +4,7 @@
 \alias{post_trade_cancel_all_after}
 \title{Set Cancel-All-After}
 \usage{
-post_trade_cancel_all_after(
-  time_out,
-  tag = NULL,
-  config,
-  tz = .okx_default_tz
-)
+post_trade_cancel_all_after(time_out, tag = NULL, config, tz = .okx_default_tz)
 }
 \arguments{
 \item{time_out}{Character or numeric. Countdown in seconds. `0` disables it.}

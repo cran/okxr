@@ -9,7 +9,7 @@ copy trading, with shared request signing and schema-based response parsing.
 `okxr` is available on CRAN. Install the stable release from CRAN or use the
 GitHub repository for development versions between CRAN releases.
 
-Current development release: `v0.4.5`
+Current development release: `v0.4.7`
 
 ## Installation
 
@@ -122,12 +122,17 @@ get_copy_trade_current_subpos(config = config)
 | --- | --- | --- |
 | market | GET | `get_market_candles()` |
 | market | GET | `get_market_tickers()` |
+| market | GET | `get_market_books_rpi()` |
 | market | GET | `get_market_trades()` |
 | market | GET | `get_market_mark_price_candles()` |
 | market | GET | `get_market_index_tickers()` |
 | market | GET | `get_market_index_candles()` |
 | market | GET | `get_market_index_components()` |
 | public | GET | `get_public_time()` |
+| public | GET | `get_public_event_contract_series()` |
+| public | GET | `get_public_event_contract_events()` |
+| public | GET | `get_public_event_contract_markets()` |
+| public | GET | `get_public_mm_instrument_types()` |
 | public | GET | `get_public_underlying()` |
 | public | GET | `get_public_estimated_price()` |
 | public | GET | `get_public_estimated_settlement_info()` |
@@ -143,6 +148,7 @@ get_copy_trade_current_subpos(config = config)
 | public | GET | `get_public_option_trades()` |
 | account | GET | `get_account_balance()` |
 | account | GET | `get_account_instruments()` |
+| account | GET | `get_account_bill_types()` |
 | account | GET | `get_account_subtypes()` |
 | account | GET | `get_account_adjust_leverage_info()` |
 | account | GET | `get_account_position_risk()` |
@@ -209,6 +215,7 @@ get_copy_trade_current_subpos(config = config)
 | trade | POST | `post_trade_amend_order()` |
 | trade | POST | `post_trade_amend_batch_orders()` |
 | trade | POST | `post_trade_order_precheck()` |
+| trade | POST | `post_trade_order_algo()` |
 | trade | POST | `post_trade_cancel_all_after()` |
 | trade | POST | `post_trade_cancel_algos()` |
 | trade | POST | `post_trade_amend_algos()` |
@@ -264,6 +271,8 @@ See [NEWS.md](NEWS.md) for release history.
 * [x] Account operational action coverage for v0.4.3
 * [x] Asset transfer, withdrawal, and convert action coverage for v0.4.4
 * [x] POST wrapper validation and cancellation parameter completeness for v0.4.5
+* [x] OKX compatibility patch for base URL, RPI migration, chase algo orders, asset bill filters, and parser fields for v0.4.6
+* [x] 2026 compatibility-completion patch for event contracts, MM instrument types, instrument metadata, ELP, slippage, bill types, and parser fields for v0.4.7
 * [ ] Websocket support
 
 ## License

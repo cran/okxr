@@ -36,6 +36,7 @@ account-specific side effects.
 
 Authors:
 \itemize{
+  \item Oliver Zhou \email{oliver.yxzhou@gmail.com}
   \item Lily Li \email{lilyli.qc.hk@gmail.com}
 }
 

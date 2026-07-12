@@ -203,6 +203,31 @@ get_market_books <- function(
   .gets$market_books(query_string = query_string, config = config, tz = tz)
 }
 
+#' Get RPI order book
+#'
+#' Retrieve the RPI order book for an instrument.
+#'
+#' @param inst_id Character. Instrument ID, e.g. `"BTC-USDT-SWAP"`.
+#' @param sz Integer or `NULL`. Order book depth. If `NULL`, OKX uses its
+#'   endpoint default.
+#' @param config Optional list. Public endpoint request options, such as
+#'   `timeout`; credentials are not required.
+#' @param tz Character. Time zone for parsing timestamps. Default `"Asia/Hong_Kong"`.
+#'
+#' @return A `data.frame` with JSON-encoded `asks` and `bids` columns plus
+#'   timestamp and sequence metadata when returned by OKX.
+#'
+#' @export
+get_market_books_rpi <- function(
+  inst_id,
+  sz = NULL,
+  config = NULL,
+  tz = .okx_default_tz
+) {
+  query_string <- .okx_build_query(instId = inst_id, sz = sz)
+  .gets$market_books_rpi(query_string = query_string, config = config, tz = tz)
+}
+
 #' Get recent public trades
 #'
 #' Retrieve recent public trades for an instrument.
@@ -415,7 +440,9 @@ get_market_block_tickers <- function(inst_type, inst_family = NULL, config = NUL
 #' @param inst_id Character or `NULL`. Specific instrument ID to query. Use
 #'   `NULL` to fetch all instruments of `inst_type`.
 #' @param inst_type Character. Instrument type. One of `"SPOT"`, `"MARGIN"`,
-#'   `"SWAP"` (default), `"FUTURES"`, `"OPTION"`.
+#'   `"SWAP"` (default), `"FUTURES"`, `"OPTION"`, or `"EVENTS"`.
+#' @param series_id Character or `NULL`. Event-contract series ID. Required by
+#'   OKX when `inst_type = "EVENTS"`.
 #' @param config Optional list. Public endpoint request options, such as
 #'   `timeout`; credentials are not required.
 #' @param tz Character. Time zone for parsing timestamps. Default `"Asia/Hong_Kong"`.
@@ -438,9 +465,102 @@ get_market_block_tickers <- function(inst_type, inst_family = NULL, config = NUL
 #' @seealso [get_public_mark_price()]
 #' @note Since okxr 0.1.2
 #' @export
-get_public_instruments <- function(inst_id = NULL, inst_type = "SWAP", config = NULL, tz = .okx_default_tz) {
-  query_string <- .okx_build_query(instType = inst_type, instId = inst_id)
+get_public_instruments <- function(inst_id = NULL, inst_type = "SWAP", series_id = NULL, config = NULL, tz = .okx_default_tz) {
+  query_string <- .okx_build_query(instType = inst_type, instId = inst_id, seriesId = series_id)
   .gets$public_instruments(query_string = query_string, config = config, tz = tz)
+}
+
+#' Get event-contract series
+#'
+#' Retrieve prediction-market series metadata.
+#'
+#' @param series_id Character or `NULL`. Series ID filter. If `NULL`, OKX
+#'   returns all series.
+#' @param config Optional list. Public endpoint request options.
+#' @param tz Character. Time zone for parsing timestamps. Default `"Asia/Hong_Kong"`.
+#'
+#' @return A `data.frame` with series metadata. Nested settlement information
+#'   is JSON-encoded in `settlement`.
+#' @export
+get_public_event_contract_series <- function(series_id = NULL, config = NULL, tz = .okx_default_tz) {
+  query_string <- .okx_build_query(seriesId = series_id)
+  .gets$public_event_contract_series(query_string = query_string, config = config, tz = tz)
+}
+
+#' Get event-contract events
+#'
+#' Retrieve event records for a prediction-market series.
+#'
+#' @param series_id Character. Series ID.
+#' @param event_id Character or `NULL`. Event ID filter.
+#' @param state Character or `NULL`. Event state filter.
+#' @param after Character or `NULL`. Pagination cursor for earlier records.
+#' @param before Character or `NULL`. Pagination cursor for newer records.
+#' @param limit Integer or `NULL`. Number of rows to request.
+#' @param config Optional list. Public endpoint request options.
+#' @param tz Character. Time zone for parsing timestamps. Default `"Asia/Hong_Kong"`.
+#'
+#' @return A `data.frame` with event identifiers, times, and state.
+#' @export
+get_public_event_contract_events <- function(series_id, event_id = NULL, state = NULL, after = NULL, before = NULL, limit = NULL, config = NULL, tz = .okx_default_tz) {
+  query_string <- .okx_build_query(
+    seriesId = series_id,
+    eventId = event_id,
+    state = state,
+    after = after,
+    before = before,
+    limit = limit
+  )
+  .gets$public_event_contract_events(query_string = query_string, config = config, tz = tz)
+}
+
+#' Get event-contract markets
+#'
+#' Retrieve market records for prediction-market events.
+#'
+#' @param series_id Character. Series ID.
+#' @param event_id Character or `NULL`. Event ID filter.
+#' @param inst_id Character or `NULL`. Instrument ID filter.
+#' @param state Character or `NULL`. Market state filter.
+#' @param after Character or `NULL`. Pagination cursor for earlier records.
+#' @param before Character or `NULL`. Pagination cursor for newer records.
+#' @param limit Integer or `NULL`. Number of rows to request.
+#' @param config Optional list. Public endpoint request options.
+#' @param tz Character. Time zone for parsing timestamps. Default `"Asia/Hong_Kong"`.
+#'
+#' @return A `data.frame` with market identifiers, strike metadata, state, and
+#'   settlement fields.
+#' @export
+get_public_event_contract_markets <- function(series_id, event_id = NULL, inst_id = NULL, state = NULL, after = NULL, before = NULL, limit = NULL, config = NULL, tz = .okx_default_tz) {
+  query_string <- .okx_build_query(
+    seriesId = series_id,
+    eventId = event_id,
+    instId = inst_id,
+    state = state,
+    after = after,
+    before = before,
+    limit = limit
+  )
+  .gets$public_event_contract_markets(query_string = query_string, config = config, tz = tz)
+}
+
+#' Get MM instrument types
+#'
+#' Retrieve MM Program instrument type classifications for SPOT and SWAP
+#' instruments.
+#'
+#' @param inst_type Character or `NULL`. Instrument type filter, `"SPOT"` or
+#'   `"SWAP"`. If `NULL`, OKX returns all supported types.
+#' @param inst_id Character or `NULL`. Instrument ID filter. If supplied, OKX
+#'   returns at most one record.
+#' @param config Optional list. Public endpoint request options.
+#' @param tz Character. Time zone for parsing timestamps. Default `"Asia/Hong_Kong"`.
+#'
+#' @return A `data.frame` with `instId`, `instType`, and `pairType`.
+#' @export
+get_public_mm_instrument_types <- function(inst_type = NULL, inst_id = NULL, config = NULL, tz = .okx_default_tz) {
+  query_string <- .okx_build_query(instType = inst_type, instId = inst_id)
+  .gets$public_mm_instrument_types(query_string = query_string, config = config, tz = tz)
 }
 
 #' Get underlying list
@@ -854,7 +974,7 @@ get_public_convert_contract_coin <- function(inst_id, sz, type = NULL, px = NULL
 #' Retrieve option tick-band information for one or more option instrument
 #' families.
 #'
-#' @param inst_type Character. Instrument type. Currently `"OPTION"`.
+#' @param inst_type Character. Instrument type, `"OPTION"` or `"EVENTS"`.
 #' @param inst_family Character or `NULL`. Instrument family filter.
 #' @param config Optional list. Public endpoint request options, such as
 #'   `timeout`; credentials are not required.

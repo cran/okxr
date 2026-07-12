@@ -16,6 +16,10 @@ post_trade_order(
   tgt_ccy = NULL,
   cl_ord_id = NULL,
   tag = NULL,
+  is_elp_taker_access = NULL,
+  rpi_taker_access = NULL,
+  rpi_px_round = NULL,
+  slippage_pct = NULL,
   config,
   tz = .okx_default_tz
 )
@@ -42,6 +46,17 @@ post_trade_order(
 \item{cl_ord_id}{Optional. Custom client order ID (auto-generated if NULL).}
 
 \item{tag}{Optional. Tag used for identifying the strategy or bot.}
+
+\item{is_elp_taker_access}{Optional logical. Whether IOC orders may take ELP
+liquidity.}
+
+\item{rpi_taker_access}{Optional logical. Whether the order can take RPI
+liquidity.}
+
+\item{rpi_px_round}{Optional RPI price rounding mode.}
+
+\item{slippage_pct}{Optional maximum acceptable slippage for SPOT and margin
+market orders.}
 
 \item{config}{A list with API credentials: \code{api_key}, \code{secret_key}, \code{passphrase}.}
 

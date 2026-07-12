@@ -12,7 +12,7 @@ get_public_instrument_tick_bands(
 )
 }
 \arguments{
-\item{inst_type}{Character. Instrument type. Currently `"OPTION"`.}
+\item{inst_type}{Character. Instrument type, `"OPTION"` or `"EVENTS"`.}
 
 \item{inst_family}{Character or `NULL`. Instrument family filter.}
 

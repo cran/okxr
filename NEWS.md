@@ -1,5 +1,24 @@
 # okxr news
 
+## okxr 0.4.7
+
+* Added event-contract public data wrappers for series, events, and markets,
+  plus MM instrument-type classification lookup.
+* Added remaining 2026 compatibility request parameters for instrument queries,
+  ELP access, spot-market slippage tolerance, and account bill-type lookup.
+* Expanded parser schemas for instrument metadata, order sub-codes, event
+  contract metadata, and newer trade/account response fields.
+
+## okxr 0.4.6
+
+* Updated the default OKX REST host to `https://openapi.okx.com`.
+* Added RPI migration support via `get_market_books_rpi()` and RPI order
+  request parameters for regular order placement and amendment.
+* Added chase algo order support with `post_trade_order_algo()` and
+  `adv_chase_params` support for algo amendments.
+* Added `third_party_type` filters for asset bills endpoints and parser fields
+  for newer instrument, algo, order, and asset-bill response fields.
+
 ## okxr 0.4.5
 
 * Expanded `post_trade_cancel_order()` so it accepts either `ord_id` or

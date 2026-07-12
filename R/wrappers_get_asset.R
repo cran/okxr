@@ -181,6 +181,7 @@ get_asset_transfer_state <- function(trans_id = NULL, client_id = NULL, type = N
 #' @param ccy Character or `NULL`. Currency filter.
 #' @param type Character or `NULL`. Bill type filter.
 #' @param client_id Character or `NULL`. Client-supplied transfer or withdrawal ID.
+#' @param third_party_type Character or `NULL`. Third-party bill type filter.
 #' @param after Character or `NULL`. Pagination cursor for earlier records.
 #' @param before Character or `NULL`. Pagination cursor for newer records.
 #' @param limit Integer or `NULL`. Number of results to request.
@@ -190,11 +191,12 @@ get_asset_transfer_state <- function(trans_id = NULL, client_id = NULL, type = N
 #'
 #' @return A \code{data.frame} with asset bill rows.
 #' @export
-get_asset_bills <- function(ccy = NULL, type = NULL, client_id = NULL, after = NULL, before = NULL, limit = NULL, config, tz = .okx_default_tz) {
+get_asset_bills <- function(ccy = NULL, type = NULL, client_id = NULL, third_party_type = NULL, after = NULL, before = NULL, limit = NULL, config, tz = .okx_default_tz) {
   query_string <- .okx_build_query(
     ccy = ccy,
     type = type,
     clientId = client_id,
+    thirdPartyType = third_party_type,
     after = after,
     before = before,
     limit = limit
@@ -209,6 +211,7 @@ get_asset_bills <- function(ccy = NULL, type = NULL, client_id = NULL, after = N
 #' @param ccy Character or `NULL`. Currency filter.
 #' @param type Character or `NULL`. Bill type filter.
 #' @param client_id Character or `NULL`. Client-supplied transfer or withdrawal ID.
+#' @param third_party_type Character or `NULL`. Third-party bill type filter.
 #' @param after Character or `NULL`. Pagination cursor for earlier records.
 #' @param before Character or `NULL`. Pagination cursor for newer records.
 #' @param limit Integer or `NULL`. Number of results to request.
@@ -219,11 +222,12 @@ get_asset_bills <- function(ccy = NULL, type = NULL, client_id = NULL, after = N
 #'
 #' @return A \code{data.frame} with historical asset bill rows.
 #' @export
-get_asset_bills_history <- function(ccy = NULL, type = NULL, client_id = NULL, after = NULL, before = NULL, limit = NULL, paging_type = NULL, config, tz = .okx_default_tz) {
+get_asset_bills_history <- function(ccy = NULL, type = NULL, client_id = NULL, third_party_type = NULL, after = NULL, before = NULL, limit = NULL, paging_type = NULL, config, tz = .okx_default_tz) {
   query_string <- .okx_build_query(
     ccy = ccy,
     type = type,
     clientId = client_id,
+    thirdPartyType = third_party_type,
     after = after,
     before = before,
     limit = limit,

@@ -4,11 +4,7 @@
 \alias{post_account_set_auto_repay}
 \title{Set Account Auto Repay}
 \usage{
-post_account_set_auto_repay(
-  auto_repay,
-  tz = .okx_default_tz,
-  config
-)
+post_account_set_auto_repay(auto_repay, tz = .okx_default_tz, config)
 }
 \arguments{
 \item{auto_repay}{Logical. Whether auto repay should be enabled.}

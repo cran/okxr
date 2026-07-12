@@ -4,11 +4,7 @@
 \alias{get_public_underlying}
 \title{Get underlying list}
 \usage{
-get_public_underlying(
-  inst_type,
-  config = NULL,
-  tz = .okx_default_tz
-)
+get_public_underlying(inst_type, config = NULL, tz = .okx_default_tz)
 }
 \arguments{
 \item{inst_type}{Character. Instrument type: `"SWAP"`, `"FUTURES"`, or

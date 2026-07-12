@@ -4,11 +4,7 @@
 \alias{get_asset_asset_valuation}
 \title{Get asset valuation}
 \usage{
-get_asset_asset_valuation(
-  ccy = NULL,
-  config,
-  tz = .okx_default_tz
-)
+get_asset_asset_valuation(ccy = NULL, config, tz = .okx_default_tz)
 }
 \arguments{
 \item{ccy}{Character or `NULL`. Valuation currency filter.}

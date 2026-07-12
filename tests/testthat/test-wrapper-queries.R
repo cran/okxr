@@ -22,6 +22,12 @@ test_that("GET wrappers build expected query strings", {
       market_index_tickers = function(query_string, config, tz) query_string,
       market_index_candles = function(query_string, config, tz) query_string,
       market_history_index_candles = function(query_string, config, tz) query_string,
+      market_books_rpi = function(query_string, config, tz) query_string,
+      public_instruments = function(query_string, config, tz) query_string,
+      public_event_contract_series = function(query_string, config, tz) query_string,
+      public_event_contract_events = function(query_string, config, tz) query_string,
+      public_event_contract_markets = function(query_string, config, tz) query_string,
+      public_mm_instrument_types = function(query_string, config, tz) query_string,
       public_underlying = function(query_string, config, tz) query_string,
       public_estimated_price = function(query_string, config, tz) query_string,
       public_delivery_exercise_history = function(query_string, config, tz) query_string,
@@ -165,6 +171,30 @@ test_that("GET wrappers build expected query strings", {
     "?instFamily=BTC-USD"
   )
   expect_equal(
+    okxr::get_market_books_rpi("BTC-USDT-SWAP", sz = 5),
+    "?instId=BTC-USDT-SWAP&sz=5"
+  )
+  expect_equal(
+    okxr::get_public_instruments(inst_type = "EVENTS", series_id = "BTC-ABOVE-DAILY"),
+    "?instType=EVENTS&seriesId=BTC-ABOVE-DAILY"
+  )
+  expect_equal(
+    okxr::get_public_event_contract_series(series_id = "BTC-ABOVE-DAILY"),
+    "?seriesId=BTC-ABOVE-DAILY"
+  )
+  expect_equal(
+    okxr::get_public_event_contract_events(series_id = "BTC-ABOVE-DAILY", state = "live", limit = 20),
+    "?seriesId=BTC-ABOVE-DAILY&state=live&limit=20"
+  )
+  expect_equal(
+    okxr::get_public_event_contract_markets(series_id = "BTC-ABOVE-DAILY", event_id = "EVT", inst_id = "INST", state = "live"),
+    "?seriesId=BTC-ABOVE-DAILY&eventId=EVT&instId=INST&state=live"
+  )
+  expect_equal(
+    okxr::get_public_mm_instrument_types(inst_type = "SWAP", inst_id = "BTC-USDT-SWAP"),
+    "?instType=SWAP&instId=BTC-USDT-SWAP"
+  )
+  expect_equal(
     okxr::get_public_underlying(inst_type = "FUTURES"),
     "?instType=FUTURES"
   )
@@ -303,11 +333,15 @@ test_that("GET wrappers build expected query strings", {
     "?region=united_states&importance=3"
   )
   expect_equal(
-    okxr::get_account_instruments(inst_type = "SPOT", inst_id = "BTC-USDT", config = cfg),
-    "?instType=SPOT&instId=BTC-USDT"
+    okxr::get_account_instruments(inst_type = "EVENTS", inst_id = "BTC-ABOVE-DAILY-260224-1600-65000", series_id = "BTC-ABOVE-DAILY", config = cfg),
+    "?instType=EVENTS&instId=BTC-ABOVE-DAILY-260224-1600-65000&seriesId=BTC-ABOVE-DAILY"
   )
   expect_equal(
     okxr::get_account_subtypes(type = "1,2", config = cfg),
+    "?type=1%2C2"
+  )
+  expect_equal(
+    okxr::get_account_bill_types(type = "1,2", config = cfg),
     "?type=1%2C2"
   )
   expect_equal(
@@ -438,12 +472,12 @@ test_that("GET wrappers build expected query strings", {
     "?transId=1&type=0"
   )
   expect_equal(
-    okxr::get_asset_bills(ccy = "USDT", type = "2", limit = 10, config = cfg),
-    "?ccy=USDT&type=2&limit=10"
+    okxr::get_asset_bills(ccy = "USDT", type = "2", third_party_type = "1", limit = 10, config = cfg),
+    "?ccy=USDT&type=2&thirdPartyType=1&limit=10"
   )
   expect_equal(
-    okxr::get_asset_bills_history(ccy = "USDT", paging_type = "2", limit = 10, config = cfg),
-    "?ccy=USDT&limit=10&pagingType=2"
+    okxr::get_asset_bills_history(ccy = "USDT", third_party_type = "1", paging_type = "2", limit = 10, config = cfg),
+    "?ccy=USDT&thirdPartyType=1&limit=10&pagingType=2"
   )
   expect_equal(
     okxr::get_asset_deposit_withdraw_status(wd_id = "200045249", config = cfg),
@@ -551,10 +585,18 @@ test_that("post_trade_order preserves supplied client order id", {
     ord_type = "market",
     sz = "1",
     cl_ord_id = "custom-id",
+    is_elp_taker_access = TRUE,
+    rpi_taker_access = TRUE,
+    rpi_px_round = "0.01",
+    slippage_pct = "0.01",
     config = cfg
   )
 
   expect_equal(body$clOrdId, "custom-id")
+  expect_equal(body$isElpTakerAccess, "true")
+  expect_equal(body$rpiTakerAccess, "true")
+  expect_equal(body$rpiPxRound, "0.01")
+  expect_equal(body$slippagePct, "0.01")
 })
 
 test_that("trade POST wrappers reject malformed identifier and batch inputs", {
@@ -597,6 +639,30 @@ test_that("trade POST wrappers reject malformed identifier and batch inputs", {
     okxr::post_trade_amend_algos(inst_id = "BTC-USDT", algo_id = "1", config = cfg),
     "must include at least one of"
   )
+  expect_error(
+    okxr::post_trade_order_algo(
+      inst_id = "BTC-USDT-SWAP",
+      td_mode = "cross",
+      side = "buy",
+      ord_type = "trigger",
+      advance_ord_type = "chase",
+      config = cfg
+    ),
+    "`adv_chase_params` is required"
+  )
+  expect_error(
+    okxr::post_trade_order_algo(
+      inst_id = "BTC-USDT-SWAP",
+      td_mode = "cross",
+      side = "buy",
+      ord_type = "trigger",
+      advance_ord_type = "chase",
+      adv_chase_params = list(chaseType = "distance"),
+      attach_algo_ords = list(list(tpTriggerPx = "70000")),
+      config = cfg
+    ),
+    "`attach_algo_ords` cannot be used"
+  )
 })
 
 test_that("trade POST wrappers build expected request bodies", {
@@ -615,6 +681,7 @@ test_that("trade POST wrappers build expected request bodies", {
       trade_cancel_batch_orders = function(body_list, tz, config) body_list,
       trade_amend_order = function(body_list, tz, config) body_list,
       trade_amend_batch_orders = function(body_list, tz, config) body_list,
+      trade_order_algo = function(body_list, tz, config) body_list,
       trade_order_precheck = function(body_list, tz, config) body_list,
       trade_cancel_all_after = function(body_list, tz, config) body_list,
       trade_cancel_algos = function(body_list, tz, config) body_list,
@@ -660,20 +727,23 @@ test_that("trade POST wrappers build expected request bodies", {
     req_id = "amend-1",
     new_sz = "2",
     cxl_on_fail = TRUE,
+    rpi_taker_access = TRUE,
     config = cfg
   )
   expect_equal(amend_body$reqId, "amend-1")
   expect_equal(amend_body$cxlOnFail, "true")
+  expect_equal(amend_body$rpiTakerAccess, "true")
 
   amend_batch_body <- okxr::post_trade_amend_batch_orders(
     orders = list(
       list(inst_id = "BTC-USDT", ord_id = "123", new_sz = "2"),
-      list(inst_id = "BTC-USDT", cl_ord_id = "client-2", new_px = "2.20")
+      list(inst_id = "BTC-USDT", cl_ord_id = "client-2", new_px = "2.20", rpi_taker_access = FALSE)
     ),
     config = cfg
   )
   expect_equal(amend_batch_body[[1]]$newSz, "2")
   expect_equal(amend_batch_body[[2]]$newPx, "2.20")
+  expect_equal(amend_batch_body[[2]]$rpiTakerAccess, "false")
 
   precheck_body <- okxr::post_trade_order_precheck(
     inst_id = "BTC-USDT",
@@ -683,10 +753,26 @@ test_that("trade POST wrappers build expected request bodies", {
     px = "2.15",
     sz = "2",
     reduce_only = TRUE,
+    slippage_pct = "0.02",
     config = cfg
   )
   expect_equal(precheck_body$reduceOnly, "true")
   expect_equal(precheck_body$ordType, "limit")
+  expect_equal(precheck_body$slippagePct, "0.02")
+
+  order_algo_body <- okxr::post_trade_order_algo(
+    inst_id = "BTC-USDT-SWAP",
+    td_mode = "cross",
+    side = "buy",
+    ord_type = "trigger",
+    sz = "1",
+    trigger_px = "62000",
+    advance_ord_type = "chase",
+    adv_chase_params = list(chaseType = "distance", distance = "10"),
+    config = cfg
+  )
+  expect_equal(order_algo_body$advanceOrdType, "chase")
+  expect_equal(order_algo_body$advChaseParams$chaseType, "distance")
 
   caa_body <- okxr::post_trade_cancel_all_after(
     time_out = 60,
@@ -714,12 +800,14 @@ test_that("trade POST wrappers build expected request bodies", {
     cxl_on_fail = TRUE,
     new_trigger_px = "62000",
     new_ord_px = "-1",
+    adv_chase_params = list(chaseType = "distance", distance = "12"),
     config = cfg
   )
   expect_equal(amend_algos_body$algoId, "algo-1")
   expect_equal(amend_algos_body$reqId, "algo-amend-1")
   expect_equal(amend_algos_body$cxlOnFail, "true")
   expect_equal(amend_algos_body$newTriggerPx, "62000")
+  expect_equal(amend_algos_body$advChaseParams$distance, "12")
 
   mass_cancel_body <- okxr::post_trade_mass_cancel(
     inst_type = "OPTION",

@@ -4,10 +4,7 @@
 \alias{get_market_platform_24_volume}
 \title{Get platform 24-hour volume}
 \usage{
-get_market_platform_24_volume(
-  config = NULL,
-  tz = .okx_default_tz
-)
+get_market_platform_24_volume(config = NULL, tz = .okx_default_tz)
 }
 \arguments{
 \item{config}{Optional list. Public endpoint request options, such as
